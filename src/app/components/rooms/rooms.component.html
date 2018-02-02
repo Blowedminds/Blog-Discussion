@@ -1,0 +1,6 @@
+<div class="" *ngIf="rooms">
+  <div class="" *ngFor="let room of rooms.data">
+
+    <a [routerLink]="['/room', room.slug]">{{room.slug}}</a>
+  </div>
+</div>

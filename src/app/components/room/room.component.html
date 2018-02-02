@@ -1,0 +1,19 @@
+<div class="" *ngIf="messages">
+
+  <div class="" *ngFor="let message of messages">
+      {{message.message }}
+  </div>
+
+  <div class="send-box">
+    <form (ngSubmit)="sendMessage(f)" #f="ngForm">
+
+      <mat-input-container>
+        <input  matInput placeholder="" ngModel name="message" required>
+      </mat-input-container>
+
+      <button mat-mini-fab type="submit" [disabled]="!f.valid">Send</button>
+
+    </form>
+  </div>
+Working
+</div>
