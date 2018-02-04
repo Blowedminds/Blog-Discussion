@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { RequestService } from '../../services/request.service'
+import { RequestService, GlobalDataService } from '../../exports/services'
 
 @Component({
   selector: 'app-rooms',
@@ -9,13 +9,13 @@ import { RequestService } from '../../services/request.service'
 })
 export class RoomsComponent implements OnInit {
 
-  private rooms: any;
+  rooms: any;
 
-  constructor(private request: RequestService) { }
+  constructor(private globalDataService: GlobalDataService) { }
 
   ngOnInit() {
 
-    this.request.getRooms().subscribe( response => this.rooms = response)
+    this.globalDataService.rooms.subscribe( response => this.rooms = response)
   }
 
 }

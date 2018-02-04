@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-//import { ActivatedRoute, Params, NavigationEnd, Router } from '@angular/router';
 
+import { GlobalDataService, RequestService }  from './exports/services'
 
 @Component({
   selector: 'app-root',
@@ -11,16 +11,12 @@ export class AppComponent {
   title = 'app';
 
   constructor(
-    // private route: ActivatedRoute,
-    // private router: Router
+    private globalDataService: GlobalDataService,
+    private requestService: RequestService
   )
   {
-    // this.router.events.filter( e => e instanceof NavigationEnd).subscribe( e => {
-    //
-    //   let article = route.root.firstChild.snapshot.params['article']
-    //
-    // })
-   }
+    this.requestService.getRooms().subscribe( response => globalDataService.rooms = response)
+  }
 
 
 }

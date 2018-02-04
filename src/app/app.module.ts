@@ -18,9 +18,11 @@ import * as components from './exports/components';
     components.RoomsComponent,
     components.AuthComponent,
     components.LoginComponent,
-    // components.RegisterComponent,
+    components.RegisterComponent,
     components.LogoutComponent,
     components.RoomComponent,
+    components.MessagesComponent,
+    components.RoomsListComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,8 @@ import * as components from './exports/components';
     services.ApiService,
     services.ChatService,
     services.AuthService,
-    services.UserService
+    services.UserService,
+    services.GlobalDataService
   ]
 })
 

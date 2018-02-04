@@ -19,6 +19,13 @@ export class UserService extends MainService{
   )
   {
     super(http, api)
+
+    let rq1 = this.getUser().subscribe(response => {
+
+      this.updateUser(response)
+
+      rq1.unsubscribe();
+    });
   }
 
   getUser(): Observable<any>

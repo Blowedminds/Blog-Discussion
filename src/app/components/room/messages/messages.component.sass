@@ -1,0 +1,48 @@
+.message
+  background: none
+
+  .message-in
+    display: flex
+    color: black
+
+    .message-inline
+      max-width: 80%
+
+      .message-user
+        width: fit-content
+        border-radius: 5px
+        padding: 8px
+        margin: 2px 0
+        box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.15)
+
+        .user-id
+          display: block
+          margin-bottom: 5px
+          min-width: 140px
+
+          span
+            color: purple
+
+        span
+          font-size: 14px
+          color: #404040
+
+  .message-left
+    justify-content: flex-start
+
+    .message-user
+      background: white
+
+  .message-right
+    justify-content: flex-end
+
+    .user-id
+      display: none !important
+
+    .message-user
+      background: #3F51B5
+      float: right
+      clear: both
+
+      .message-text
+        color: white !important

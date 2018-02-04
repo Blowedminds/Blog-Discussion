@@ -19,16 +19,19 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.sass"
+        "styles.sass",
+        "assets/css/fa-svg-with-js.css"
       ],
       "scripts": [
         "../node_modules/hammerjs/hammer.js",
-        "../node_modules/socket.io-client/dist/socket.io.slim.js"
+        "../node_modules/socket.io-client/dist/socket.io.slim.js",
+        "assets/js/fontawesome-all.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "prod": "environments/environment.prod.ts",
+        "lan": "environments/environment.lan.ts"
       }
     }
   ],

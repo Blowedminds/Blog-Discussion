@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms'
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { RequestService, ChatService } from '../../exports/services'
+import { RequestService, UserService, ChatService, GlobalDataService } from '../../exports/services'
 
 import { Subscription } from 'rxjs/Subscription'
 
@@ -19,15 +18,25 @@ export class RoomComponent implements OnInit {
 
   slug: string;
 
+  user: any;
+
+  rooms: any;
+
   subs = new Subscription()
 
   constructor(
-    private request: RequestService,
-    private chat: ChatService,
+    private requestServie: RequestService,
+    private chatService: ChatService,
+    private userService: UserService,
     private route: ActivatedRoute,
+    private globalDataService: GlobalDataService
 )
 {
-  this.chat.echo.connector.connect()
+  this.chatService.echo.connector.connect()
+
+  this.userService.userObs.subscribe( user => this.user = user)
+
+  this.globalDataService.rooms.subscribe(response => this.rooms = response)
 }
 
   ngOnInit() {
@@ -35,21 +44,21 @@ export class RoomComponent implements OnInit {
     let rq1 = this.route.params.switchMap( (params: Params) => {
 
       if(this.slug)
-        this.chat.echo.leave(this.slug)
+        this.chatService.echo.leave(this.slug)
 
       this.messages = null;
 
 
       this.slug = params['slug'];
 
-      return this.request.getRoomMessages(params['slug'])
+      return this.requestServie.getRoomMessages(params['slug'])
     }).subscribe( response => {
 
       this.article = response;
 
       this.messages = response.room.messages;
 
-      this.chat.echo.channel(this.slug).listen('.new_message.created', message => this.messages.push(message))
+      this.chatService.echo.channel(this.slug).listen('.new_message.created', message => this.pushMessage(message))
     });
 
     this.subs.add(rq1);
@@ -59,16 +68,26 @@ export class RoomComponent implements OnInit {
   {
     this.subs.unsubscribe()
 
-    this.chat.echo.disconnect();
+    this.chatService.echo.disconnect();
   }
 
-  sendMessage(f: NgForm)
+  pushMessage(message: any)
   {
-    let form = {
-      message: f.value.message
+    if(!this.messages || this.messages.length === 0) {
+      this.messages = [[message]]
+
+      return;
     }
 
-    this.subs.add(this.request.sendMessage(this.slug, form).subscribe(response => f.reset()));
+    let lastItem = this.messages[this.messages.length - 1];
+
+    if(lastItem[0].user_id == message.user_id) {
+      lastItem.push(message)
+    }
+    else {
+      this.messages.push([message])
+    }
   }
+
 
 }
