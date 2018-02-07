@@ -1,6 +1,6 @@
-<div class="main-message" *ngIf="messages">
+<div class="message-main" *ngIf="messages">
 
-  <div class="body-message">
+  <div class="message-body">
     <div class="message" *ngFor="let user_message of messages">
       <div class="message-in" [ngClass]="{'message-left': user.user_id !== user_message[0].user_id, 'message-right': user.user_id === user_message[0].user_id}">
         <div class="message-inline">

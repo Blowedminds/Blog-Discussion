@@ -2,35 +2,35 @@
 
   <div class="columns">
 
-    <div class="column is-one-third room-panel">
+    <div class="column is-one-third room-panel panel">
+      <div class="room-inline inline">
+        <div class="user-panel">
+          <div class="">
 
-      <div class="user-panel">
-        <div class="">
+          </div>
+        </div>
 
+        <div class="room-search">
+          <form (ngSubmit)="sendMessage(f)" #f="ngForm">
+
+            <input type="text" id="send-text" name="message" ngModel autocomplete="off" placeholder="Makale Arayın" required>
+
+            <button mat-mini-fab type="submit" [disabled]="!f.valid"><i class="far fa-paper-plane"></i></button>
+
+          </form>
+        </div>
+
+        <div class="room-list-panel">
+          <app-rooms-list [rooms]="rooms.data"></app-rooms-list>
         </div>
       </div>
-
-      <div class="room-search">
-        <form (ngSubmit)="sendMessage(f)" #f="ngForm">
-
-          <input type="text" id="send-text" name="message" ngModel autocomplete="off" placeholder="Makale Arayın" required>
-
-          <button mat-mini-fab type="submit" [disabled]="!f.valid"><i class="far fa-paper-plane"></i></button>
-
-        </form>
-      </div>
-
-      <div class="room-list">
-        <app-rooms-list [rooms]="rooms.data"></app-rooms-list>
-      </div>
-
     </div>
 
-    <div class="column chat-panel">
+    <div class="column chat-panel panel">
 
       <div class="chat-overlay"></div>
 
-      <div class="chat-inline">
+      <div class="chat-inline inline">
         <div class="chat-header">
 
           <div class="columns">
