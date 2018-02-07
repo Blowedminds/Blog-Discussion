@@ -1,6 +1,12 @@
-<div class="" *ngIf="rooms">
+<div class="room-main" *ngIf="rooms">
 
-  <div class="" *ngFor="let room of rooms">
-    {{room.slug}}
+
+  <div class="room-body">
+    <div class="room" *ngFor="let room of rooms">
+      <div class="room-in">
+        {{room.slug}}
+      </div>
+    </div>
   </div>
+
 </div>

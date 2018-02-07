@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { RequestService, UserService, ChatService, GlobalDataService } from '../../exports/services'
@@ -10,11 +10,11 @@ import { Subscription } from 'rxjs/Subscription'
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.sass']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, AfterViewInit {
 
   article: any;
 
-  messages: any;
+  messages: Array<any> = [];
 
   slug: string;
 
@@ -24,20 +24,22 @@ export class RoomComponent implements OnInit {
 
   subs = new Subscription()
 
+  @ViewChild('chatMessage') chat_message: ElementRef;
+
   constructor(
     private requestServie: RequestService,
     private chatService: ChatService,
     private userService: UserService,
     private route: ActivatedRoute,
     private globalDataService: GlobalDataService
-)
-{
-  this.chatService.echo.connector.connect()
+  )
+  {
+    this.chatService.echo.connector.connect()
 
-  this.userService.userObs.subscribe( user => this.user = user)
+    this.userService.userObs.subscribe( user => this.user = user)
 
-  this.globalDataService.rooms.subscribe(response => this.rooms = response)
-}
+    this.globalDataService.rooms.subscribe(response => this.rooms = response)
+  }
 
   ngOnInit() {
 
@@ -58,10 +60,16 @@ export class RoomComponent implements OnInit {
 
       this.messages = response.room.messages;
 
+      console.log(this.chat_message)
       this.chatService.echo.channel(this.slug).listen('.new_message.created', message => this.pushMessage(message))
     });
 
     this.subs.add(rq1);
+  }
+
+  ngAfterViewInit()
+  {
+    console.log(this.chat_message)
   }
 
   ngDestroy()
@@ -87,6 +95,14 @@ export class RoomComponent implements OnInit {
     else {
       this.messages.push([message])
     }
+
+    let nativeElement = this.chat_message.nativeElement;
+
+    console.log(`offset: ${nativeElement.offsetHeight} scrollHeight: ${nativeElement.scrollHeight} scrollTop: ${nativeElement.scrollTop}`)
+
+    let scrollTo = this.chat_message.nativeElement.scrollHeight - this.chat_message.nativeElement.offsetHeight
+
+    //this.chat_message.nativeElement.scrollTop = scrollTo
   }
 
 

@@ -2,8 +2,28 @@
 
   <div class="columns">
 
-    <div class="column is-one-third">
-      <app-rooms-list [rooms]="rooms.data"></app-rooms-list>
+    <div class="column is-one-third room-panel">
+
+      <div class="user-panel">
+        <div class="">
+
+        </div>
+      </div>
+
+      <div class="room-search">
+        <form (ngSubmit)="sendMessage(f)" #f="ngForm">
+
+          <input type="text" id="send-text" name="message" ngModel autocomplete="off" placeholder="Makale Arayın" required>
+
+          <button mat-mini-fab type="submit" [disabled]="!f.valid"><i class="far fa-paper-plane"></i></button>
+
+        </form>
+      </div>
+
+      <div class="room-list">
+        <app-rooms-list [rooms]="rooms.data"></app-rooms-list>
+      </div>
+
     </div>
 
     <div class="column chat-panel">
@@ -27,7 +47,7 @@
           </div>
         </div>
 
-        <div class="chat-message">
+        <div class="chat-message" #chatMessage>
           <app-messages [messages]="messages" [user]="user"></app-messages>
         </div>
 
@@ -46,9 +66,5 @@
 
     </div>
   </div>
-
-
-
-
 
 </div>

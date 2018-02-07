@@ -25,7 +25,8 @@ export class MainService {
 
   protected headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    //'Access-Control-Max-Age': '600'
   })
 
   constructor(

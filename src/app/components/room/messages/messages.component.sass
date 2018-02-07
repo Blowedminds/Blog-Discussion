@@ -1,3 +1,14 @@
+.main-message
+  width: 100%
+  height: 100%
+  position: absolute
+  overflow-y: scroll
+  display: flex
+  flex-direction: column-reverse
+
+.body-message
+  flex: 0 0 auto
+
 .message
   background: none
 
@@ -7,6 +18,9 @@
 
     .message-inline
       max-width: 80%
+      padding-left: 7.5%
+      padding-right: 7.5%
+      padding-bottom: 3px
 
       .message-user
         width: fit-content
