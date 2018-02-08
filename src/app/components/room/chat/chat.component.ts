@@ -23,13 +23,13 @@ export class ChatComponent implements OnInit {
   }
 
 
-  sendMessage(f: NgForm)
+  putMessage(f: NgForm)
   {
     let form = {
       message: f.value.message
     }
 
-    this.subs.add(this.request.sendMessage(this.slug, form).subscribe(response => f.reset()));
+    this.subs.add(this.request.putMessage(this.slug, form).subscribe(response => f.reset()));
   }
 
 

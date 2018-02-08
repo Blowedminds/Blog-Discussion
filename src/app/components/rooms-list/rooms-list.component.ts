@@ -9,6 +9,8 @@ export class RoomsListComponent implements OnInit {
 
   @Input() rooms;
 
+  @Input() slug;
+
   constructor() { }
 
   ngOnInit() {

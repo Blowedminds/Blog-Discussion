@@ -60,7 +60,6 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
       this.messages = response.room.messages;
 
-      console.log(this.chat_message)
       this.chatService.echo.channel(this.slug).listen('.new_message.created', message => this.pushMessage(message))
     });
 
@@ -69,7 +68,6 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit()
   {
-    console.log(this.chat_message)
   }
 
   ngDestroy()
@@ -97,8 +95,6 @@ export class RoomComponent implements OnInit, AfterViewInit {
     }
 
     let nativeElement = this.chat_message.nativeElement;
-
-    console.log(`offset: ${nativeElement.offsetHeight} scrollHeight: ${nativeElement.scrollHeight} scrollTop: ${nativeElement.scrollTop}`)
 
     let scrollTo = this.chat_message.nativeElement.scrollHeight - this.chat_message.nativeElement.offsetHeight
 

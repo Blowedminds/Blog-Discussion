@@ -38,15 +38,15 @@ export class RequestService extends MainService {
   {
     this.updateToken()
 
-    return this.http.get(this.makeUrl(slug + '/messages'), this.options)
+    return this.http.get(this.makeUrl('room/' + slug + '/messages'), this.options)
                     .catch(error => this.handleError(error))
   }
 
-  sendMessage(slug: string, form: any): Observable<any>
+  putMessage(slug: string, form: any): Observable<any>
   {
     this.updateToken()
 
-    return this.http.put(this.makeUrl(slug + '/message'), JSON.stringify(form),this.options)
+    return this.http.put(this.makeUrl('room/' + slug + '/message'), JSON.stringify(form),this.options)
                     .catch(error => this.handleError(error))
   }
 

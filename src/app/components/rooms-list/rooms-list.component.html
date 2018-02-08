@@ -2,9 +2,10 @@
 
 
   <div class="room-body">
-    <div class="room" *ngFor="let room of rooms">
+
+    <div [routerLink]="['/room', room.slug]" class="room" *ngFor="let room of rooms" [ngClass]="{'room-active': room.slug === slug}">
       <div class="room-in">
-        {{room.slug}}
+        {{room.contents[0].title}}
       </div>
     </div>
   </div>

@@ -22,12 +22,19 @@
       padding-right: 7.5%
       padding-bottom: 3px
 
+      .message-user:hover
+        .message-control
+          visibility: visible !important
+
       .message-user
         width: fit-content
         border-radius: 5px
         padding: 8px
         margin: 2px 0
         box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.15)
+
+        .message-control
+          visibility: hidden
 
         .user-id
           display: block
@@ -60,3 +67,6 @@
 
       .message-text
         color: white !important
+
+.edit-message
+  position: fixed
