@@ -5,7 +5,6 @@ import { HttpClientModule}  from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
-
 import { MaterialModule } from './exports/material.module';
 import * as services from './exports/services'
 import * as components from './exports/components';

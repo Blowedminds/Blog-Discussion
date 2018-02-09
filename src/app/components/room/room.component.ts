@@ -79,6 +79,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
   pushMessage(message: any)
   {
+    console.log(message);
     if(!this.messages || this.messages.length === 0) {
       this.messages = [[message]]
 
