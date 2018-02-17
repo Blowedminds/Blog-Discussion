@@ -23,19 +23,24 @@ export class MainService {
 
   protected AUTH_API_URL: string = "auth/"
 
-  protected headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-    //'Access-Control-Max-Age': '600'
-  })
+  protected _options: any = {
+    headers:  new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-Socket-ID': ''
+      //'Access-Control-Max-Age': '600'
+    }),
+    params: {
+      token: null
+    }
+  };
+
 
   constructor(
     protected http: HttpClient,
     protected api: ApiService
   )
-  {
-
-  }
+  {}
 
   protected getToken(): string
   {
@@ -97,5 +102,13 @@ export class MainService {
       break;
     }
     return Promise.reject(error.message || error);
+  }
+
+  get options()
+  {
+
+    this._options.params.token = this.api.getToken()
+
+    return this._options;
   }
 }

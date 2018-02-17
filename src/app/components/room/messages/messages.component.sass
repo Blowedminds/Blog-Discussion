@@ -8,6 +8,7 @@
 
 .message-body
   flex: 0 0 auto
+  border: none
 
 .message
   background: none
@@ -15,12 +16,11 @@
   .message-in
     display: flex
     color: black
+    flex-direction: column
 
     .message-inline
-      max-width: 80%
-      padding-left: 7.5%
-      padding-right: 7.5%
-      padding-bottom: 3px
+      padding-left: 5%
+      padding-right: 5%
 
       .message-user:hover
         .message-control
@@ -28,13 +28,30 @@
 
       .message-user
         width: fit-content
+        max-width: 80%
         border-radius: 5px
         padding: 8px
         margin: 2px 0
         box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.15)
+        position: relative
 
         .message-control
           visibility: hidden
+          position: absolute
+          right: 5px
+          top: 1px
+          span
+            font-size: 12px
+
+        .message-time
+          color: #c5c5c5
+          font-size: 12px
+          position: absolute
+          right: 5px
+          bottom: 2px
+
+        .message-text
+          margin: 5px 75px 5px 0
 
         .user-id
           display: block

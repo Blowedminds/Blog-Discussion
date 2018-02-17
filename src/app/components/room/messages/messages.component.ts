@@ -9,7 +9,7 @@ import { RequestService } from '../../../exports/services'
 })
 export class MessagesComponent implements OnInit {
 
-  @Input() messages;
+  @Input() messages: Array<any>;
 
   @Input() user;
 
@@ -25,14 +25,14 @@ export class MessagesComponent implements OnInit {
 
   openEditMessage(event: any, message: any)
   {
-    this.edit_message = message
-
-    console.log(this.editMessage, event)
-
-    console.log(this.editMessage.nativeElement.style.top)
-    this.editMessage.nativeElement.style.top = event.pageY + "px"
-    this.editMessage.nativeElement.style.left = event.pageX + "px"
-    console.log(this.editMessage.nativeElement.style.top)
+    // this.edit_message = message
+    //
+    // console.log(this.editMessage, event)
+    //
+    // console.log(this.editMessage.nativeElement.style.top)
+    // this.editMessage.nativeElement.style.top = event.pageY + "px"
+    // this.editMessage.nativeElement.style.right = window.innerWidth - this.editMessage.nativeElement.offsetLeft + "px"
+    // console.log(this.editMessage.nativeElement.style.top)
 
   }
 
@@ -41,4 +41,8 @@ export class MessagesComponent implements OnInit {
 
   }
 
+  deleteMessage(message_id: number)
+  {
+    let rq1 = this.requestService.deleteMessage(message_id).subscribe(response => rq1.unsubscribe())
+  }
 }

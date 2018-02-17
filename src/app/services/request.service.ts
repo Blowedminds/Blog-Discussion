@@ -9,49 +9,24 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class RequestService extends MainService {
 
-  private options: any;
-
   constructor(
     protected http: HttpClient,
     protected api: ApiService
   )
   {
     super(http, api);
-
-    this.options = {
-      headers: this.headers,
-      params: {
-        token: null
-      }
-    }
   }
 
-  getRooms(): Observable<any>
-  {
-    this.updateToken()
-
-    return this.http.get(this.makeUrl('rooms'), this.options)
-                    .catch(error => this.handleError(error))
-  }
-
-  getRoomMessages(slug: string): Observable<any>
-  {
-    this.updateToken()
-
-    return this.http.get(this.makeUrl('room/' + slug + '/messages'), this.options)
-                    .catch(error => this.handleError(error))
-  }
 
   putMessage(slug: string, form: any): Observable<any>
   {
-    this.updateToken()
-
     return this.http.put(this.makeUrl('room/' + slug + '/message'), JSON.stringify(form),this.options)
-                    .catch(error => this.handleError(error))
+                    .catch(error => this.handleError(error));
   }
 
-  updateToken()
+  deleteMessage(message_id: number): Observable<any>
   {
-    this.options.params.token = this.api.getToken()
+    return this.http.delete(this.makeUrl('message/' + message_id), this.options)
+                    .catch(error => this.handleError(error));
   }
 }

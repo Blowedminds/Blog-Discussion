@@ -5,22 +5,22 @@ import * as Echo from 'laravel-echo'
 import * as io from 'socket.io-client'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { MainService }  from './main.service'
-import { ApiService } from './api.service'
+import { MainService, ApiService }  from '../exports/services'
+
 import { environment } from '../../environments/environment'
 
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ChatService extends MainService {
 
   public echo: any;
 
-  public echoConnected$ = new BehaviorSubject<boolean>(false);
+  private _rooms: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   constructor(
     http: HttpClient,
-    api: ApiService
+    api: ApiService,
   ) {
     super(http, api);
 
@@ -28,15 +28,41 @@ export class ChatService extends MainService {
       broadcaster: 'socket.io',
       host: environment.socket.baseUrl,
     });
+
+    this.echo.connector.connect()
+
+    // console.log(this.echo.socketId())
+    //
+    // this.options.headers['X-Socket-ID'] = this.echo.socketId()
+
+    let rq1 = this.getRooms().subscribe(response => {
+
+      this.rooms = response
+
+      rq1.unsubscribe();
+    })
   }
 
-  getRoomMessages(): Observable<any>
+  getRooms(): Observable<any>
   {
-    return this.http.get(this.makeUrl('messages'), {
-      headers: this.headers,
-      params: {
-        token: this.getToken()
-      }
-    })
+    return this.http.get(this.makeUrl('rooms'), this.options)
+                    .catch(error => this.handleError(error));
+  }
+
+
+  getRoomMessages(slug: string): Observable<any>
+  {
+    return this.http.get(this.makeUrl('room/' + slug + '/messages'), this.options)
+                    .catch(error => this.handleError(error));
+  }
+
+  get rooms()
+  {
+    return this._rooms.asObservable()
+  }
+
+  set rooms(value)
+  {
+    this._rooms.next(value)
   }
 }

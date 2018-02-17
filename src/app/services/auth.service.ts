@@ -22,7 +22,7 @@ export class AuthService extends MainService{
     const url = this.makeUrl('check')
 
     return this.http
-                    .get(url, {headers: this.headers})
+                    .get(url, this.options)
 
   }
 
@@ -31,7 +31,7 @@ export class AuthService extends MainService{
     const url = this.makeUrl('register');
 
     return this.http
-                    .put(url, JSON.stringify(data), {headers: this.headers})
+                    .put(url, JSON.stringify(data), this.options)
   }
 
   login(data: any): Observable<any>
@@ -39,7 +39,7 @@ export class AuthService extends MainService{
     const url = this.makeUrl('login');
 
     return this.http
-                    .post(url, JSON.stringify(data), {headers: this.headers})
+                    .post(url, JSON.stringify(data), this.options)
   }
 
   logout(): Observable<any>
@@ -47,7 +47,7 @@ export class AuthService extends MainService{
     const url = this.makeUrl('logout');
 
     return this.http
-                    .get(url, {headers: this.headers})
+                    .get(url, this.options)
                     .catch(error => this.handleError(error))
   }
 

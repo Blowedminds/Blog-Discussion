@@ -1,7 +1,7 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { RequestService, UserService, ChatService, GlobalDataService } from '../../exports/services'
+import { RequestService, UserService, ChatService } from '../../exports/services'
 
 import { Subscription } from 'rxjs/Subscription'
 
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription'
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.sass']
 })
-export class RoomComponent implements OnInit, AfterViewInit {
+export class RoomComponent implements OnInit {
 
   article: any;
 
@@ -22,23 +22,23 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
   rooms: any;
 
-  subs = new Subscription()
+  reconnect: any;
 
-  @ViewChild('chatMessage') chat_message: ElementRef;
+  subs = new Subscription()
 
   constructor(
     private requestServie: RequestService,
     private chatService: ChatService,
     private userService: UserService,
-    private route: ActivatedRoute,
-    private globalDataService: GlobalDataService
+    private route: ActivatedRoute
   )
   {
-    this.chatService.echo.connector.connect()
+
+    //console.log(this.chatService.echo.connector.socket.on('connect', () => console.log('connected')));
 
     this.userService.userObs.subscribe( user => this.user = user)
 
-    this.globalDataService.rooms.subscribe(response => this.rooms = response)
+    this.chatService.rooms.subscribe(response => this.rooms = response)
   }
 
   ngOnInit() {
@@ -46,40 +46,47 @@ export class RoomComponent implements OnInit, AfterViewInit {
     let rq1 = this.route.params.switchMap( (params: Params) => {
 
       if(this.slug)
-        this.chatService.echo.leave(this.slug)
+        this.chatService.echo.leave(this.slug);
+
+      if(this.reconnect)
+        this.reconnect.removeListener();
 
       this.messages = null;
 
-
       this.slug = params['slug'];
 
-      return this.requestServie.getRoomMessages(params['slug'])
+      this.reconnect = this.chatService.echo.connector.socket.on('reconnect', () => {
+
+          let rq1 = this.chatService.getRoomMessages(params['slug']).subscribe( response => {
+
+            this.messages = response.room.messages;
+
+            rq1.unsubscribe();
+          })
+      })
+
+      return this.chatService.getRoomMessages(params['slug'])
     }).subscribe( response => {
 
       this.article = response;
 
       this.messages = response.room.messages;
 
-      this.chatService.echo.channel(this.slug).listen('.new_message.created', message => this.pushMessage(message))
+      this.chatService.echo.channel('article.' + this.slug)
+                           .listen('.message.created', message => this.pushMessage(message))
+                           .listen('.message.deleted', message => this.deleteMessage(message.id));
     });
 
     this.subs.add(rq1);
   }
 
-  ngAfterViewInit()
-  {
-  }
-
   ngDestroy()
   {
     this.subs.unsubscribe()
-
-    this.chatService.echo.disconnect();
   }
 
   pushMessage(message: any)
   {
-    console.log(message);
     if(!this.messages || this.messages.length === 0) {
       this.messages = [[message]]
 
@@ -94,13 +101,21 @@ export class RoomComponent implements OnInit, AfterViewInit {
     else {
       this.messages.push([message])
     }
-
-    let nativeElement = this.chat_message.nativeElement;
-
-    let scrollTo = this.chat_message.nativeElement.scrollHeight - this.chat_message.nativeElement.offsetHeight
-
-    //this.chat_message.nativeElement.scrollTop = scrollTo
   }
 
+  deleteMessage(message_id: number)
+  {
+    let indexIn = -1;
+
+    let index = this.messages.findIndex( user_message => (indexIn = user_message.findIndex( msg => msg.id === message_id)) > -1)
+
+    if(index > -1 && indexIn > -1){
+      this.messages[index].splice(indexIn, 1);
+
+      if(this.messages[index].length == 0)
+        this.messages.splice(index, 1);
+    }
+
+  }
 
 }

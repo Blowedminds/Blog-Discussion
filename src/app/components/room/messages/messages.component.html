@@ -3,12 +3,12 @@
   <div class="message-body">
     <div class="message" *ngFor="let user_message of messages">
       <div class="message-in" [ngClass]="{'message-left': user.user_id !== user_message[0].user_id, 'message-right': user.user_id === user_message[0].user_id}">
-        <div class="message-inline">
+        <div class="message-inline" *ngFor="let message of user_message; let i = index" [attr.key]="i">
 
-          <div class="message-user" *ngFor="let message of user_message; let i = index" [attr.key]="i">
+          <div class="message-user">
 
             <div class="message-control" *ngIf="user.user_id === message.user_id">
-              <span (click)="openEditMessage($event, message)">Düzenle</span>
+              <span (click)="deleteMessage(message.id)">Sil</span>
             </div>
 
             <div class="user-id">
@@ -17,7 +17,7 @@
 
             <span class="message-text">{{message.message}}</span>
 
-            <span>{{message.created_at | date:'dd/MM/yy, hh:mm'}}</span>
+            <span class="message-time">{{message.created_at | date:'HH:mm'}}</span>
 
           </div>
 

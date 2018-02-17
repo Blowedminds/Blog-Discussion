@@ -33,6 +33,7 @@ import * as components from './exports/components';
   ],
   bootstrap: [components.AppComponent],
   providers: [
+    services.MainService,
     services.RequestService,
     services.ApiService,
     services.ChatService,

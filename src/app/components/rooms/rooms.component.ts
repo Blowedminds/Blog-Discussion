@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { RequestService, GlobalDataService } from '../../exports/services'
+import { RequestService, ChatService } from '../../exports/services'
 
 @Component({
   selector: 'app-rooms',
@@ -11,11 +11,11 @@ export class RoomsComponent implements OnInit {
 
   rooms: any;
 
-  constructor(private globalDataService: GlobalDataService) { }
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
 
-    this.globalDataService.rooms.subscribe( response => this.rooms = response)
+    this.chatService.rooms.subscribe( response => this.rooms = response)
   }
 
 }

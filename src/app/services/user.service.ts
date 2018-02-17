@@ -33,9 +33,9 @@ export class UserService extends MainService{
     const url = this.MAIN_URI + this.USER_API_URL + "info?token=" + this.api.getToken()
 
     return this.http
-                    .get(url, {headers :this.headers})
+                    .get(url, this.options)
                   //  .map(response => response)
-                    .catch(this.handleError)
+                    .catch(error => Promise.reject(error.message || error))
   }
 
   updateUser(data: any)
