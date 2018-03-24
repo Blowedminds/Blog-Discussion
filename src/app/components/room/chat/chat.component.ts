@@ -16,12 +16,15 @@ export class ChatComponent implements OnInit {
 
   subs = new Subscription()
 
-  constructor(private request: RequestService) { }
+  constructor(private requestService: RequestService) { }
 
   ngOnInit() {
-    console.log(this.slug)
   }
 
+  ngOnDestroy()
+  {
+    this.subs.unsubscribe();
+  }
 
   putMessage(f: NgForm)
   {
@@ -29,8 +32,6 @@ export class ChatComponent implements OnInit {
       message: f.value.message
     }
 
-    this.subs.add(this.request.putMessage(this.slug, form).subscribe(response => f.reset()));
+    this.subs.add(this.requestService.putMessage(this.slug, form).subscribe(response => f.reset()));
   }
-
-
 }

@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import * as Echo from 'laravel-echo'
-import * as io from 'socket.io-client'
+import * as io from 'socket.io-client';
+import * as Echo from 'laravel-echo';
+
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { MainService, ApiService }  from '../exports/services'
+import { MainService }  from './main.service'
+import { ApiService }  from './api.service'
 
 import { environment } from '../../environments/environment'
 
@@ -21,7 +23,8 @@ export class ChatService extends MainService {
   constructor(
     http: HttpClient,
     api: ApiService,
-  ) {
+  )
+  {
     super(http, api);
 
     this.echo = new Echo({
@@ -30,10 +33,6 @@ export class ChatService extends MainService {
     });
 
     this.echo.connector.connect()
-
-    // console.log(this.echo.socketId())
-    //
-    // this.options.headers['X-Socket-ID'] = this.echo.socketId()
 
     let rq1 = this.getRooms().subscribe(response => {
 

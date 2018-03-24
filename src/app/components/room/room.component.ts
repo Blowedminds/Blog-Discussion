@@ -33,9 +33,6 @@ export class RoomComponent implements OnInit {
     private route: ActivatedRoute
   )
   {
-
-    //console.log(this.chatService.echo.connector.socket.on('connect', () => console.log('connected')));
-
     this.userService.userObs.subscribe( user => this.user = user)
 
     this.chatService.rooms.subscribe(response => this.rooms = response)
