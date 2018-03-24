@@ -1,0 +1,89 @@
+.message-main
+  width: 100%
+  height: 100%
+  position: absolute
+  overflow-y: scroll
+  display: flex
+  flex-direction: column-reverse
+
+.message-body
+  flex: 0 0 auto
+  border: none
+
+.message
+  background: none
+
+  .message-in
+    display: flex
+    color: black
+    flex-direction: column
+
+    .message-inline
+      padding-left: 5%
+      padding-right: 5%
+
+      .message-user:hover
+        .message-control
+          visibility: visible !important
+
+      .message-user
+        width: fit-content
+        max-width: 80%
+        border-radius: 5px
+        padding: 8px
+        margin: 2px 0
+        box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.15)
+        position: relative
+
+        .message-control
+          visibility: hidden
+          position: absolute
+          right: 5px
+          top: 1px
+          span
+            font-size: 12px
+
+        .message-time
+          color: #c5c5c5
+          font-size: 12px
+          position: absolute
+          right: 5px
+          bottom: 2px
+
+        .message-text
+          margin: 5px 75px 5px 0
+
+        .user-id
+          display: block
+          margin-bottom: 5px
+          min-width: 140px
+
+          span
+            color: purple
+
+        span
+          font-size: 14px
+          color: #404040
+
+  .message-left
+    justify-content: flex-start
+
+    .message-user
+      background: white
+
+  .message-right
+    justify-content: flex-end
+
+    .user-id
+      display: none !important
+
+    .message-user
+      background: #3F51B5
+      float: right
+      clear: both
+
+      .message-text
+        color: white !important
+
+.edit-message
+  position: fixed

@@ -1,7 +1,0 @@
-<form (ngSubmit)="sendMessage(f)" #f="ngForm">
-
-  <input type="text" id="send-text" name="message" ngModel autocomplete="off" placeholder="Mesaj girin" required>
-
-  <button mat-mini-fab type="submit" [disabled]="!f.valid"><i class="far fa-paper-plane"></i></button>
-
-</form>

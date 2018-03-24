@@ -1,0 +1,35 @@
+<div class="message-main">
+
+  <div class="message-body">
+    <div class="message" *ngFor="let user_message of messages">
+      <div class="message-in" [ngClass]="{'message-left': user.user_id !== user_message[0].user_id, 'message-right': user.user_id === user_message[0].user_id}">
+        <div class="message-inline" *ngFor="let message of user_message; let i = index" [attr.key]="i">
+
+          <div class="message-user">
+
+            <div class="message-control" *ngIf="user.user_id === message.user_id">
+              <span (click)="deleteMessage(message.id)">Sil</span>
+            </div>
+
+            <div class="user-id">
+              <span class="" *ngIf="i == 0">{{message.user.name}}</span>
+            </div>
+
+            <span class="message-text">{{message.message}}</span>
+
+            <span class="message-time">{{message.created_at | date:'HH:mm'}}</span>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="edit-message" #editMessage>
+  <div class="" *ngIf="edit_message">
+    <input type="text" name="" [value]="edit_message.message">
+  </div>
+</div>
