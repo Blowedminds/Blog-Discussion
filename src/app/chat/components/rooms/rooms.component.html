@@ -1,0 +1,6 @@
+<div class="" *ngIf="isPageReady">
+  <div class="" *ngFor="let room of rooms.data">
+
+    <a [routerLink]="['/room', room.slug]">{{room.contents[0].title}}</a>
+  </div>
+</div>

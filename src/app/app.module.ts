@@ -1,46 +1,23 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule}  from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing/app-routing.module';
 
-import { MaterialModule } from './exports/material.module';
-import * as services from './exports/services'
-import * as components from './exports/components';
+import { AppRoutingModule } from './app-routing.module'
+import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chat/chat.module';
+
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    components.AppComponent,
-    components.ChatComponent,
-    components.ChatDirective,
-    components.RoomsComponent,
-    components.AuthComponent,
-    components.LoginComponent,
-    components.RegisterComponent,
-    components.LogoutComponent,
-    components.RoomComponent,
-    components.MessagesComponent,
-    components.RoomsListComponent,
+    AppComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule,
-    MaterialModule,
-    FormsModule
+    AppRoutingModule,
+    AuthModule,
+    ChatModule
   ],
-  bootstrap: [components.AppComponent],
-  providers: [
-    services.MainService,
-    services.RequestService,
-    services.ApiService,
-    services.ChatService,
-    services.AuthService,
-    services.UserService,
-    services.GlobalDataService
-  ]
+  bootstrap: [AppComponent],
 })
 
 export class AppModule { }
