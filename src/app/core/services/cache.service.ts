@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject }     from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Rx';
 
@@ -31,15 +31,13 @@ export class CacheService {
     if (this.inFlightObservables.has(key)) {
 
       return this.inFlightObservables.get(key);
-    }
-    else if (fallback && fallback instanceof Observable) {
+    } else if (fallback && fallback instanceof Observable) {
 
       this.inFlightObservables.set(key, new Subject());
 
       return fallback.do((value) => { this.set(key, value, maxAge); })
-                      .catch( error => this.handleError(error, key));
-    }
-    else {
+        .catch(error => this.handleError(error, key));
+    } else {
 
       return Observable.throw('Requested key is not available in Cache');
     }
@@ -88,15 +86,13 @@ export class CacheService {
       }
 
       return true;
-    }
-    else {
+    } else {
 
       return false;
     }
   }
 
-  private handleError(error: any, key: string): Promise<any>
-  {
+  private handleError(error: any, key: string): Promise<any> {
     this.notifyInFlightObservers(key, null);
 
     return Promise.reject(error.message || error);
