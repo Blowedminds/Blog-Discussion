@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm }                   from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -12,13 +12,13 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.sass']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  error: boolean = false;
+  error = false;
 
-  errorText: string = "Kullanıcı adı veya şifre yanlış";
+  errorText = 'Kullanıcı adı veya şifre yanlış';
 
-  subs = new Subscription()
+  subs = new Subscription();
 
   constructor(
     private authRequestService: AuthRequestService,
@@ -27,46 +27,41 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let rq1 = this.authRequestService.checkAuthenticated().subscribe( response => response ? this.helpersService.navigate(['/']) : null);
+    const rq1 = this.authRequestService.checkAuthenticated().subscribe(response => response ? this.helpersService.navigate(['/']) : null);
 
     this.subs.add(rq1);
   }
 
-  ngOnDestroy()
-  {
-    this.subs.unsubscribe()
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
-  login(f: NgForm)
-  {
-    this.error = false
+  login(f: NgForm) {
+    this.error = false;
 
-    let rq1 = this.authRequestService.login({
+    const rq1 = this.authRequestService.login({
       email: f.value.email,
       password: f.value.password
     })
-    .map(response => this.helpersService.parseToken(response))
-    .do(response => {
+      .map(response => this.helpersService.parseToken(response))
+      .do(response => {
 
-      localStorage.setItem('token', response.token);
+        localStorage.setItem('token', response.token);
 
-      return response;
-    })
-    .catch(error => this.loginErrorHandler(error))
-    .subscribe((response) => this.helpersService.navigate(['/rooms']));
+        return response;
+      })
+      .catch(error => this.loginErrorHandler(error))
+      .subscribe((response) => this.helpersService.navigate(['/rooms']));
 
-    this.subs.add(rq1)
+    this.subs.add(rq1);
   }
 
-  private loginErrorHandler(error: any, router: any = null): Promise<any>
-  {
-    let jsError = error.error
+  private loginErrorHandler(error: any, router: any = null): Promise<any> {
+    console.log(error);
 
-    console.log(error)
-
-    switch(error.status){
+    switch (error.status) {
       case 401:
-        switch(jsError.error){
+        switch (error.error.error) {
           case 'Invalid Credentials':
             this.error = true;
             break;

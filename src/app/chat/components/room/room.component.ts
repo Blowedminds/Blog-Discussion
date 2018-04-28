@@ -26,31 +26,32 @@ export class RoomComponent implements OnInit {
 
   reconnect: any;
 
-  subs = new Subscription()
+  subs = new Subscription();
 
   constructor(
     private chatRequestService: ChatRequestService,
     private chatService: ChatService,
     private cacheService: CacheService,
     private activatedRoute: ActivatedRoute
-  )
-  {
+  ) {
     this.cacheService.get('user', chatRequestService.makeGetRequest('user.info'))
-                      .subscribe( user => this.user = user)
+      .subscribe(user => this.user = user);
 
     this.cacheService.get('rooms', chatRequestService.makeGetRequest('chat.rooms'))
-                      .subscribe(response => this.rooms = response)
+      .subscribe(response => this.rooms = response);
   }
 
   ngOnInit() {
 
-    let rq1 = this.activatedRoute.params.switchMap( (params: Params) => {
+    const rq1 = this.activatedRoute.params.switchMap((params: Params) => {
 
-      if(this.slug)
+      if (this.slug) {
         this.chatService.echo.leave(this.slug);
+      }
 
-      if(this.reconnect)
+      if (this.reconnect) {
         this.reconnect.removeListener();
+      }
 
       this.messages = null;
 
@@ -58,63 +59,60 @@ export class RoomComponent implements OnInit {
 
       this.reconnect = this.chatService.echo.connector.socket.on('reconnect', () => {
 
-          let rq1 = this.chatRequestService.getRoomMessages(params['slug']).subscribe( response => {
+        const rq2 = this.chatRequestService.getRoomMessages(params['slug']).subscribe(response => {
 
-            this.messages = response.room.messages;
+          this.messages = response.room.messages;
 
-            rq1.unsubscribe();
-          })
-      })
+          rq2.unsubscribe();
+        });
+      });
 
-      return this.chatRequestService.getRoomMessages(params['slug'])
-    }).subscribe( (response: any) => {
+      return this.chatRequestService.getRoomMessages(params['slug']);
+    }).subscribe((response: any) => {
 
       this.article = response;
 
       this.messages = response.room.messages;
 
       this.chatService.echo.channel('article.' + this.slug)
-                           .listen('.message.created', message => this.pushMessage(message))
-                           .listen('.message.deleted', message => this.deleteMessage(message.id));
+        .listen('.message.created', message => this.pushMessage(message))
+        .listen('.message.deleted', message => this.deleteMessage(message.id));
     });
 
     this.subs.add(rq1);
   }
 
-  ngDestroy()
-  {
-    this.subs.unsubscribe()
+  ngDestroy() {
+    this.subs.unsubscribe();
   }
 
-  pushMessage(message: any)
-  {
-    if(!this.messages || this.messages.length === 0) {
-      this.messages = [[message]]
+  pushMessage(message: any) {
+    if (!this.messages || this.messages.length === 0) {
+      this.messages = [[message]];
 
       return;
     }
 
-    let lastItem = this.messages[this.messages.length - 1];
+    const lastItem = this.messages[this.messages.length - 1];
 
-    if(lastItem[0].user_id == message.user_id) {
-      lastItem.push(message)
-    }
-    else {
-      this.messages.push([message])
+    if (lastItem[0].user_id === message.user_id) {
+      lastItem.push(message);
+    } else {
+      this.messages.push([message]);
     }
   }
 
-  deleteMessage(message_id: number)
-  {
+  deleteMessage(message_id: number) {
     let indexIn = -1;
 
-    let index = this.messages.findIndex( user_message => (indexIn = user_message.findIndex( msg => msg.id === message_id)) > -1)
+    const index = this.messages.findIndex(user_message => (indexIn = user_message.findIndex(msg => msg.id === message_id)) > -1);
 
-    if(index > -1 && indexIn > -1){
+    if (index > -1 && indexIn > -1) {
       this.messages[index].splice(indexIn, 1);
 
-      if(this.messages[index].length == 0)
+      if (this.messages[index].length === 0) {
         this.messages.splice(index, 1);
+      }
     }
 
   }

@@ -11,7 +11,12 @@ export class MessagesComponent implements OnInit {
 
   @Input() messages: Array<any>;
 
-  @Input() user;
+  // tslint:disable-next-line:no-input-rename
+  @Input('user') _user;
+
+  get user() {
+    return this._user || { user_id: '' };
+  }
 
   @ViewChild('editMessage') editMessage;
 
@@ -23,8 +28,8 @@ export class MessagesComponent implements OnInit {
   ngOnInit() {
   }
 
-  deleteMessage(message_id: number)
-  {
-    let rq1 = this.chatRequestService.deleteMessage(message_id).subscribe(response => rq1.unsubscribe())
+  deleteMessage(message_id: number) {
+    const rq1 = this.chatRequestService.deleteMessage(message_id)
+      .subscribe(response => rq1.unsubscribe());
   }
 }
