@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject ,  Observable } from 'rxjs';
 
 import { MainRequestService, RoutingListService, HelpersService } from '../imports';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ChatRequestService extends MainRequestService{

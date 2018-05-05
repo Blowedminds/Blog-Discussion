@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import {throwError as observableThrowError,  BehaviorSubject ,  Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 
 interface CacheContent {
@@ -39,7 +38,7 @@ export class CacheService {
         .catch(error => this.handleError(error, key));
     } else {
 
-      return Observable.throw('Requested key is not available in Cache');
+      return observableThrowError('Requested key is not available in Cache');
     }
   }
 
