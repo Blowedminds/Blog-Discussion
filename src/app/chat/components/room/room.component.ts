@@ -6,6 +6,7 @@ import { ChatService } from '../../services/chat.service';
 import { ChatRequestService } from '../../services/chat-request.service';
 
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-room',
@@ -43,7 +44,7 @@ export class RoomComponent implements OnInit {
 
   ngOnInit() {
 
-    const rq1 = this.activatedRoute.params.switchMap((params: Params) => {
+    const rq1 = this.activatedRoute.params.pipe(switchMap((params: Params) => {
 
       if (this.slug) {
         this.chatService.echo.leave(this.slug);
@@ -68,7 +69,7 @@ export class RoomComponent implements OnInit {
       });
 
       return this.chatRequestService.getRoomMessages(params['slug']);
-    }).subscribe((response: any) => {
+    })).subscribe((response: any) => {
 
       this.article = response;
 

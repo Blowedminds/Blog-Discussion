@@ -1,53 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject ,  Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { MainRequestService, RoutingListService, HelpersService } from '../imports';
 
 @Injectable()
-export class ChatRequestService extends MainRequestService{
+export class ChatRequestService extends MainRequestService {
 
   constructor(
     http: HttpClient,
     helpersService: HelpersService,
     routingListService: RoutingListService
-  )
-  {
+  ) {
     super(http, helpersService, routingListService);
 
   }
 
-  putMessage(slug: string, form: any): Observable<any>
-  {
-    const url = this.makeUrl('chat.room', `${slug}/message`);
-
-    return this.http.put(url, JSON.stringify(form),this.options)
-                     .catch(error => this.handleError(error));
+  putMessage(slug: string, form: any): Observable<any> {
+    return this.makePutRequest('chat.room', form, `${slug}/message`);
   }
 
-  deleteMessage(message_id: number): Observable<any>
-  {
-    const url = this.makeUrl('chat.message', `${message_id}`);
-
-    return this.http.delete(url, this.options)
-                     .catch(error => this.handleError(error));
+  deleteMessage(message_id: number): Observable<any> {
+    return this.makeDeleteRequest('chat.message', `${message_id}`);
   }
 
-  getRooms(): Observable<any>
-  {
-    const url = this.makeUrl('chat.rooms');
-
-    return this.http.get(url, this.options)
-                    .catch(error => this.handleError(error));
+  getRooms(): Observable<any> {
+    return this.makeGetRequest('chat.rooms');
   }
 
-
-  getRoomMessages(slug: string): Observable<any>
-  {
-    const url = this.makeUrl('chat.room', `${slug}/messages`);
-
-    return this.http.get(url, this.options)
-                    .catch(error => this.handleError(error));
+  getRoomMessages(slug: string): Observable<any> {
+    return this.makeGetRequest('chat.room', `${slug}/messages`);
   }
 
 }

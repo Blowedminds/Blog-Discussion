@@ -12,8 +12,7 @@ export class RoomsComponent implements OnInit {
 
   rooms: any;
 
-  get isPageReady()
-  {
+  get isPageReady() {
     return !!this.rooms;
   }
 
@@ -24,7 +23,7 @@ export class RoomsComponent implements OnInit {
 
   ngOnInit() {
     this.cacheService.get('rooms', this.chatRequestService.makeGetRequest('chat.rooms'))
-                      .subscribe( response => this.rooms = response)
+      .subscribe(response => this.rooms = response);
   }
 
 }
