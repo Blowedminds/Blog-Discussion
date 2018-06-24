@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:8000/",
+  apiUrl: "http://dkblog.com/",
   socket: {
     baseUrl: "http://localhost:7110",
     options: {
